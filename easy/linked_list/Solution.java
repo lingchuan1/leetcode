@@ -1,6 +1,8 @@
 package easy.linked_list;
 
 
+import java.util.Stack;
+
 public class Solution {
     /**
      * 移除链表元素
@@ -64,6 +66,7 @@ public class Solution {
      * @param l2
      * @return
      */
+    /*
     public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
         ListNode l3 = null,p,node = null;
         while(l1 != null && l2 != null) {
@@ -94,6 +97,45 @@ public class Solution {
             l3 = node;
         }
         return l3;
+    }
+    */
+    public ListNode mergeTwoLists(ListNode l1,ListNode l2){
+        if(l2 == null) return l1;
+        if(l1 == null) return l2;
+        ListNode head = null;
+        if(l1.val <= l2.val){
+            head = l1;
+            head.next = mergeTwoLists(l1.next,l2);
+        }else{
+            head = l2;
+            head.next = mergeTwoLists(l1,l2.next);
+        }
+        return head;
+    }
+
+    /**
+     * 判断一个链表是否是回文链表
+     * 2019/3/12
+     * @param head
+     * @return
+     */
+    public boolean isPalindrome(ListNode head){
+        Stack<Integer> stack = new Stack<>();
+        if(head == null || head.next == null)
+            return true;
+        ListNode p = head;
+        while(p != null){
+            stack.push(p.val);
+            p = p.next;
+        }
+        p = head;
+        while(!stack.empty()){
+            int v = stack.pop();
+            if(v!=p.val)
+                return false;
+            p = p.next;
+        }
+        return true;
     }
 }
 class ListNode {
