@@ -68,4 +68,68 @@ public class Solution {
         }
         return;
     }
+
+    /**
+     * 将给定数字序列重新排列成字典序中下一个更大的排列31
+     * @data 2019/4/22
+     * @param nums
+     */
+    public void nextPermutation(int[] nums) {
+        int n = nums.length;
+        if(n <= 1)
+            return;
+        int t = findReverse(nums);
+        if(t == n - 1){
+            //如果最后两个数字是顺序的，直接调换最后两个数字的位置即得下一个最大的排列
+            reverse(nums,n - 2,n - 1);
+            return;
+        }
+        if(t == 0){
+            reverse(nums,0,n - 1);
+            return;
+        }
+        int index = findMax(nums,t - 1);
+        int value = nums[index];
+        nums[index] = nums[t - 1];
+        nums[t - 1] = value;
+        reverse(nums,t,n - 1);
+    }
+    //从最后一位开始查找，找到一位比它右边的数字要小
+    public int findReverse(int[] nums){
+        int n = nums.length;
+        int i = n - 1;
+        while(i > 0 && nums[i] <= nums[i - 1])
+            i--;
+        return i;
+    }
+    //反转l到r的数字序列
+    public void reverse(int[] nums,int l,int r){
+        int v;
+        while(l < r){
+            v = nums[l];
+            nums[l] = nums[r];
+            nums[r] = v;
+            l++;
+            r--;
+        }
+    }
+    //找到nums数组中第index位数字后面第一个比第index位大的数字
+    public int findMax(int[] nums,int index){
+        int n = nums.length;
+        for(int j = n -1;;j --){
+            if(nums[j] > nums[index])
+                return j;
+        }
+    }
+
+    public static void main(String[] args) {
+        Solution s = new Solution();
+        int[] arr = {4,2,4,4,3};
+        for(int i :arr)
+            System.out.println(i);
+
+        s.nextPermutation(arr);
+        for(int i :arr)
+            System.out.println(i);
+    }
 }

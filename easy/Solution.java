@@ -3,6 +3,7 @@ package easy;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Stack;
 
 public class Solution {
     //第1题 两数之和
@@ -37,36 +38,65 @@ public class Solution {
     }
 
 
-    //第20题
+    /**
+     * 栈的使用20
+     * @param s
+     * @return
+     */
     public boolean isValid(String s){
-        int length = s.length();
-        int i = 0;
-        int index = 0;
-        ArrayList<String> arrayList = new ArrayList<>();
-        while(i<length){
-            if(arrayList.isEmpty()){
-                if(s.charAt(i)=='('||s.charAt(i)=='['||s.charAt(i)=='{') {
-                    arrayList.add(index, String.valueOf(s.charAt(i)));
-                    index++;
-                    i++;
-                }else
+//        int length = s.length();
+//        int i = 0;
+//        int index = 0;
+//        ArrayList<String> arrayList = new ArrayList<>();
+//        while(i<length){
+//            if(arrayList.isEmpty()){
+//                if(s.charAt(i)=='('||s.charAt(i)=='['||s.charAt(i)=='{') {
+//                    arrayList.add(index, String.valueOf(s.charAt(i)));
+//                    index++;
+//                    i++;
+//                }else
+//                    return false;
+//            }else{
+//                String res = arrayList.get(index-1);
+//                if(res.equals("(")&&s.charAt(i)==')'||res.equals("{")&&s.charAt(i)=='}'||res.equals("[")&&s.charAt(i)==']'){
+//                    arrayList.remove(index-1);
+//                    index--;
+//                    i++;
+//                }else if (s.charAt(i)=='('||s.charAt(i)=='['||s.charAt(i)=='{'){
+//                    arrayList.add(index, String.valueOf(s.charAt(i)));
+//                    index++;
+//                    i++;
+//                }else return false;
+//            }
+//        }
+//        if(arrayList.isEmpty())
+//            return true;
+//        else return false;
+
+        Stack<Character> characters = new Stack<>();
+        for(int i = 0;i < s.length();i++){
+            if(s.charAt(i)=='('||s.charAt(i)=='['||s.charAt(i)=='{')
+                characters.push(s.charAt(i));
+            else{
+                if(characters.empty())
                     return false;
-            }else{
-                String res = arrayList.get(index-1);
-                if(res.equals("(")&&s.charAt(i)==')'||res.equals("{")&&s.charAt(i)=='}'||res.equals("[")&&s.charAt(i)==']'){
-                    arrayList.remove(index-1);
-                    index--;
-                    i++;
-                }else if (s.charAt(i)=='('||s.charAt(i)=='['||s.charAt(i)=='{'){
-                    arrayList.add(index, String.valueOf(s.charAt(i)));
-                    index++;
-                    i++;
-                }else return false;
+                char c = characters.pop();
+                char match ;
+                if(s.charAt(i)==')')
+                    match = '(';
+                else if(s.charAt(i)==']')
+                    match = '[';
+                else{
+                    assert (s.charAt(i) == '}');
+                    match = '{';
+                }
+
+                if(match != c)
+                    return false;
             }
         }
-        if(arrayList.isEmpty())
-            return true;
-        else return false;
+        return characters.empty();
     }
+
 }
 
