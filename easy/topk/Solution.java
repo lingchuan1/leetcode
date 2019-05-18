@@ -53,4 +53,66 @@ public class Solution {
         }
         return res;
     }
+
+    /**
+     * 输入n个整数，找出其中最小的K个数
+     * 冒泡直到找到最小的k个数，停止冒泡，返回结果,O(n*k)
+     * @data 2019/5/18
+     * @param input
+     * @param k
+     * @return
+     */
+    public ArrayList<Integer> GetLeastNumbers_Solution(int [] input, int k) {
+        ArrayList<Integer> res = new ArrayList<>();
+        if(input.length == 0 || k > input.length||k == 0)
+            return res;
+        int n = input.length;
+        for(int i = 0;i < k;i ++){
+            for(int j = i ;j < n - 1;j ++){
+                if(input[j] < input[j + 1]){
+                    int tem = input[j];
+                    input[j] = input[j + 1];
+                    input[j + 1] = tem;
+                }
+            }
+        }
+        for(int i = n - 1;i >= n - k;i --)
+            res.add(input[i]);
+        return res;
+    }
+
+    /**
+     * 输入n个整数，找出其中最小的K个数
+     * @data 2019/5/18
+     * 前k个数的堆排序，O(nlgk)
+     * @param input
+     * @param k
+     * @return
+     */
+    public ArrayList<Integer> GetLeastNumbers_Solution1(int [] input, int k) {
+        ArrayList<Integer> res = new ArrayList<>();
+        if(input.length == 0 || k > input.length||k == 0)
+            return res;
+        int n = input.length;
+        //建大顶堆
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<>(k, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return o2.compareTo(o1);
+            }
+        });
+        for(int i = 0;i < n;i ++){
+            if(maxHeap.size() != k){
+                maxHeap.add(input[i]);
+            }else {
+                if(input[i] < maxHeap.peek()){
+                    maxHeap.poll();
+                    maxHeap.add(input[i]);
+                }
+            }
+        }
+        for(int i:maxHeap)
+            res.add(i);
+        return res;
+    }
 }
