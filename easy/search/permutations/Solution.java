@@ -1,6 +1,5 @@
 package easy.search.permutations;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,6 +19,7 @@ public class Solution {
         permuteDFS(nums,0,visited,out);
         return res;
     }
+    //level记录当前已经拼的数，如果达到nums长度，说明是一次全排列，添加进结果
     private void permuteDFS(int[] nums,int level,int[] visited,LinkedList<Integer> out){
         if(level == nums.length){
             res.add(new LinkedList<>(out));
@@ -39,6 +39,12 @@ public class Solution {
     public static void main(String[] args){
         Solution s = new Solution();
         int[] nums = {1,2,3};
-        s.permute(nums);
+        List<List<Integer>> re = s.permute(nums);
+        for(List<Integer> a:re) {
+            for (int i : a) {
+                System.out.print(i);
+            }
+            System.out.println();
+        }
     }
 }
