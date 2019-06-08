@@ -33,11 +33,13 @@ public class LongestWord {
         List<String> list = new LinkedList();
         for(String str:words)
             list.add(str);
-
+        //先进行排序
         Collections.sort(list);
         for(String str:list){
+            //字符串长度为1不作处理
             if(str.length() == 1)
                 continue;
+            //否则，看字符串去掉最后一个字符后的字符串是否存在，存在则更新当前结果
             String s = str.substring(0,str.length() - 1);
             if(list.contains(s)){
                 if(str.length() > resLength) {
