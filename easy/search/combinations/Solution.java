@@ -59,7 +59,7 @@ public class Solution {
             return;
         }
         //还有k-out.size()个空位，[i....n]中至少要有k-out.size()个元素
-        //i最多为n-(k-out.size())+1
+        //i最大为n-(k-out.size())+1
         for (int i = start; i <= n - (k - out.size()) + 1; i++) {
             out.add(i);
             generateCombinations(n, k, i + 1, out);
@@ -136,6 +136,32 @@ public class Solution {
         }
     }
     //*****************************************************************************************************//
+
+    /**
+     * 给定一组不含重复元素的整数数组 nums，返回该数组所有可能的子集（幂集）78
+     * @data 2019/6/8
+     * @param nums
+     * @return
+     */
+    List<List<Integer>> res4 = new ArrayList<>();
+    public List<List<Integer>> subsets(int[] nums) {
+        List<Integer> out = new ArrayList<>();
+        res4.add(new ArrayList<>(out));
+        if(nums.length == 0)
+            return res4;
+        generateSubsets(0,out,nums);
+        return res4;
+     }
+
+     private void generateSubsets(int start,List<Integer> out,int[] nums){
+        for(int i = start;i < nums.length;i ++){
+            out.add(nums[i]);
+            res4.add(new ArrayList<>(out));
+            generateSubsets(i + 1,out,nums);
+            out.remove(out.size() - 1);
+        }
+     }
+    //*****************************************************************************************************//
     /**
      * 将给定数字序列重新排列成字典序中下一个更大的排列31
      * @data 2019/4/22
@@ -190,16 +216,15 @@ public class Solution {
     }
     //*****************************************************************************************************//
     public static void main(String[] args) {
-        Solution s = new Solution();
-        int[] arr = {1,2,1,5};
-        List<List<Integer>> res = s.combinationSum2(arr,8);
-        System.out.println("结果");
-        for(List<Integer> list:res){
-           for(int num:list){
-               System.out.print(num);
-           }
-            System.out.println();
-        }
-
+      Solution solution = new Solution();
+      int nums[] = {1,2,3};
+      List<List<Integer>> list = new ArrayList<>();
+      list = solution.subsets(nums);
+      for(List<Integer> res:list){
+          for(int i:res){
+              System.out.print(i);
+          }
+          System.out.println();
+      }
     }
 }
