@@ -162,6 +162,62 @@ public class Solution {
         }
      }
     //*****************************************************************************************************//
+
+    /**
+     * 给定一个可能包含重复元素的整数数组 nums，返回该数组所有可能的子集（幂集）。90
+     * @data 2019/6/10
+     * @param nums
+     * @return
+     */
+    List<List<Integer>> res6 = new ArrayList<>();
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        if(nums.length == 0)
+            return res6;
+        Arrays.sort(nums);
+        List<Integer> out = new ArrayList<>();
+        generateSubsets2(0,out,nums);
+        return res6;
+    }
+    private void generateSubsets2(int start,List<Integer> out,int[] nums){
+        res6.add(new ArrayList<>(out));
+        for(int i = start;i < nums.length;i ++){
+            out.add(nums[i]);
+            generateSubsets2(i + 1,out,nums);
+            out.remove(out.size() - 1);
+            while(i + 1 < nums.length && nums[i] == nums[i + 1])
+                i++;
+        }
+    }
+    //*****************************************************************************************************//
+
+    /**
+     * 找出所有相加之和为 n 的 k 个数的组合。组合中只允许含有 1 - 9 的正整数，并且每种组合中不存在重复的数字。216
+     * @param k
+     * @param n
+     * @data 2019/6/10
+     * @return
+     */
+    public List<List<Integer>> res5 = new ArrayList<>();
+    public List<List<Integer>> combinationSum3(int k, int n) {
+        if(k == 0 || n == 0)
+            return res5;
+        List<Integer> out = new ArrayList<>();
+        generateCombinations(k,n,out,1,0);
+        return res5;
+    }
+    private void generateCombinations(int k,int n,List<Integer> out,int index,int sum){
+        if(out.size() == k){
+            if(sum == n)
+                res5.add(new ArrayList<>(out));
+            else return;
+        }
+        for(int i = index;i < 10;i ++){
+            out.add(i);
+            generateCombinations(k,n,out,i + 1,sum + i);
+            out.remove(out.size() - 1);
+        }
+    }
+    //*****************************************************************************************************//
     /**
      * 将给定数字序列重新排列成字典序中下一个更大的排列31
      * @data 2019/4/22
@@ -217,9 +273,8 @@ public class Solution {
     //*****************************************************************************************************//
     public static void main(String[] args) {
       Solution solution = new Solution();
-      int nums[] = {1,2,3};
       List<List<Integer>> list = new ArrayList<>();
-      list = solution.subsets(nums);
+      list = solution.combinationSum3(3,9);
       for(List<Integer> res:list){
           for(int i:res){
               System.out.print(i);
