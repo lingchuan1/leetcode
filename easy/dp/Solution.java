@@ -54,6 +54,19 @@ public class Solution {
         }
         return dp[n];
     }
+    //可以只保留最新的两个结果
+    public int minCostClimbingStairs2(int[] cost) {
+        int n = cost.length;
+        int p0 = 0;
+        int p1 = 0;
+        int tem = 0;
+        for(int i = 2;i <= n;i ++){
+            tem = Math.min(p0 + cost[i - 2],p1 + cost[i - 1]);
+            p0 = p1;
+            p1 = tem;
+        }
+        return p1;
+    }
 
     /**
      * 买卖股票的最佳时机121
