@@ -2,7 +2,7 @@ package easy.binarysearch;
 
 public class Solution {
     /**
-     * 在排序数组中查找元素的第一个和最后一个位置
+     * 在排序数组中查找元素的第一个和最后一个位置34
      *
      * @param nums
      * @param target
