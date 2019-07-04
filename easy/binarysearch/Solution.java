@@ -22,28 +22,28 @@ public class Solution {
 //            right++;
 //        return new int[]{++left, --right};
 
-        int[] res = {-1,-1};
-        if(nums.length == 0)
+        int[] res = {-1, -1};
+        if (nums.length == 0)
             return res;
-        int left = 0,right = nums.length - 1;
+        int left = 0, right = nums.length - 1;
         //二分查找左边界
-        while(left < right){
-            int mid = left + (right - left)/2;
-            if(nums[mid] < target)
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] < target)
                 left = mid + 1;
             else
                 right = mid;
         }
-        if(nums[right] != target)
+        if (nums[right] != target)
             return res;
         res[0] = right;
         right = nums.length;
         //二分查找右边界
-        while(left < right){
-            int mid = left + (right - left)/2;
-            if(nums[mid] <= target)
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] <= target)
                 left = mid + 1;
-            else right = mid ;
+            else right = mid;
         }
         res[1] = --right;
         return res;
@@ -61,6 +61,35 @@ public class Solution {
         else return binarySearch(nums, left, mid - 1, target);
     }
 
+    /**
+     * 两个有序数组中的中位数
+     *
+     * @param nums1
+     * @param nums2
+     * @return
+     * @data 2019/7/4
+     */
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        int n1 = nums1.length;
+        int n2 = nums2.length;
+        int left = (n1 + n2 + 1) / 2;
+        int right = (n1 + n2 + 2) / 2;//转化为要求第k小，总数为奇数时两个结果一样
+        return (getKth(nums1, 0, nums2, 0, left) + getKth(nums1, 0, nums2, 0, right)) / 2;
+    }
+
+    private int getKth(int[] nums1, int start1, int[] nums2, int start2, int k) {
+        if (start1 >= nums1.length)
+            return nums2[start2 + k - 1];
+        if (start2 >= nums2.length)
+            return nums1[start1 + k - 1];
+        if (k == 1)
+            return Math.min(nums1[start1], nums2[start2]);
+        int midVal1 = (start1 + k / 2 - 1) < nums1.length ? nums1[start1 + k / 2 - 1] : Integer.MAX_VALUE;
+        int midVal2 = (start2 + k / 2 - 1) < nums2.length ? nums2[start2 + k / 2 - 1] : Integer.MAX_VALUE;//分别求出两个数组k/2位的数
+        if (midVal1 < midVal2)               //midVal1小于midVal2，说明midVal1之前的数肯定不是第k小，缩小查找范围
+            return getKth(nums1, start1 + k / 2, nums2, start2, k - k / 2);//递归查找
+        else return getKth(nums1, start1, nums2, start2 + k / 2, k - k / 2);
+    }
 
     public static void main(String[] args) {
         int[] nums = {5, 6, 7, 7, 8, 8, 10};

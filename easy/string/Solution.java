@@ -60,6 +60,7 @@ public class Solution {
 
     /**
      * 判断数组nums[]中是否存在相距不超过k的i和j满足nums[i]和nums[j]差的绝对值小于t 220
+     *
      * @param nums
      * @param k
      * @param t
@@ -67,17 +68,37 @@ public class Solution {
      * @data 2019/4/5
      */
     public boolean containsNearbyAlmostDuplicate(int[] nums, int k, int t) {
-        if(k < 1||t < 0) return false;
+        if (k < 1 || t < 0) return false;
         SortedSet<Long> set = new TreeSet<>();
         for (int i = 0; i < nums.length; i++) {
-            SortedSet<Long> son = set.subSet( (long)nums[i] - t,(long)  nums[i] + t + 1);
-            if(!son.isEmpty())
+            SortedSet<Long> son = set.subSet((long) nums[i] - t, (long) nums[i] + t + 1);
+            if (!son.isEmpty())
                 return true;
             if (i >= k)
-                set.remove((long)nums[i - k]);
-            set.add( (long)nums[i]);
+                set.remove((long) nums[i - k]);
+            set.add((long) nums[i]);
         }
         return false;
+    }
+
+    /**
+     * 无重复字符的最长子串3
+     *
+     * @param s
+     * @return
+     * @data2019/7/4
+     */
+    public int lengthOfLongestSubstring(String s) {
+        int[] m = new int[256];
+        Arrays.fill(m,-1);
+        int res = 0, left = -1;
+        //滑动窗口，left记录左边界，i是移动的右边界
+        for (int i = 0; i < s.length(); i++) {
+            left = Math.max(left, m[s.charAt(i)]);
+            m[s.charAt(i)] = i;
+            res = Math.max(res, i - left);
+        }
+        return res;
     }
 
     public static void main(String[] args) {
@@ -86,7 +107,7 @@ public class Solution {
 //        for (int i : list) {
 //            System.out.println(i);
 //        }
-        int nums[] = {1,5,9,1,5,9};
-        System.out.println(s.containsNearbyAlmostDuplicate(nums,2,3));
+        int nums[] = {1, 5, 9, 1, 5, 9};
+        System.out.println(s.lengthOfLongestSubstring(" "));
     }
 }
