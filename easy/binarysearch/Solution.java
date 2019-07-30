@@ -1,5 +1,7 @@
 package easy.binarysearch;
 
+import java.util.Arrays;
+
 public class Solution {
     /**
      * 在排序数组中查找元素的第一个和最后一个位置34
@@ -91,10 +93,41 @@ public class Solution {
         else return getKth(nums1, start1, nums2, start2 + k / 2, k - k / 2);
     }
 
+    /**
+     * 加热器475
+     * @param houses
+     * @param heaters
+     * @return
+     */
+    public int findRadius(int[] houses, int[] heaters) {
+        int n = heaters.length,res = 0;
+        Arrays.sort(houses);
+        Arrays.sort(heaters);
+//        for(int i = 0;i < houses.length;i ++){
+//            int cur = houses[i];
+//            while(j < n - 1 && Math.abs(heaters[j + 1] - cur) <= Math.abs(heaters[j] - cur))
+//                j ++;
+//            res = Math.max(res,Math.abs(heaters[j] - cur));
+//        }
+        for(int house:houses){
+           int left = 0,right = heaters.length - 1;
+           while(left < right){
+               int mid = left + (right - left)/2;
+               if(heaters[mid] < house)
+                   left = mid + 1;
+               else right = mid;
+           }//找到第一个不小于house的数
+           int dist1 = Math.abs(heaters[right] - house);
+           int dist2 = right == 0 ? Integer.MAX_VALUE : house - heaters[right - 1];
+           res = Math.max(res,Math.min(dist1,dist2));
+        }
+        return res;
+    }
+
     public static void main(String[] args) {
-        int[] nums = {5, 6, 7, 7, 8, 8, 10};
-        int[] res = new Solution().searchRange(nums, 8);
-        for (int i : res)
-            System.out.println(i);
+        int[] houses = {1,5};
+        int[] heaters = {2};
+       int res = new Solution().findRadius(houses,heaters);
+        System.out.println(res);
     }
 }

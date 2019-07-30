@@ -1,8 +1,5 @@
 package easy.linked_list;
 
-
-import java.util.Stack;
-
 public class Solution {
     /**
      * 移除链表元素
@@ -64,16 +61,6 @@ public class Solution {
      * 头插法
      */
     public ListNode reverseList(ListNode head) {
-//        ListNode p = head.next;
-//        ListNode q;
-//        head.next = null;
-//        while(p != null){
-//            q = p.next;
-//            p.next = head;
-//            head = p;
-//            p = q ;
-//        }
-//        return head;
         ListNode pre = null;
         ListNode cur = head;
         while (cur != null) {
@@ -85,6 +72,16 @@ public class Solution {
         }
         return pre;
     }
+
+    //反转递归
+//    public ListNode reverseList(ListNode head){
+//        if(head == null || head.next == null)
+//            return head;
+//        ListNode node = reverseList(head.next);
+//        head.next.next = head;
+//        head.next = null;
+//        return node;
+//    }
 
     /**
      * 合并两个有序链表21
@@ -147,6 +144,7 @@ public class Solution {
      * @param head
      * @return
      */
+    /*
     public boolean isPalindrome(ListNode head) {
         Stack<Integer> stack = new Stack<>();
         if (head == null || head.next == null)
@@ -162,6 +160,36 @@ public class Solution {
             if (v != p.val)
                 return false;
             p = p.next;
+        }
+        return true;
+    }
+*/
+
+    //不使用栈,空间复杂度O(1) 快慢指针
+    public boolean isPalindrome(ListNode head) {
+        if (head == null || head.next == null)
+            return true;
+        ListNode slow = head;
+        ListNode fast = head.next;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;//慢指针每次移一个单位，快指针每次移动两个单位，快指针到达尾时，慢指针到达中间
+        }
+        ListNode pre = slow;
+        ListNode cur = pre.next;
+        while (cur != null && cur.next != null) {//对后半部分反转
+            ListNode next = cur.next;
+            cur.next = next.next;
+            next.next = pre.next;
+            pre.next = next;
+        }
+        ListNode t = head;
+        slow = slow.next;
+        while (slow != null) {//前半部分和反转后的后半部分比较
+            if (t.val != slow.val)
+                return false;
+            t = t.next;
+            slow = slow.next;
         }
         return true;
     }
@@ -194,6 +222,7 @@ public class Solution {
 
     /**
      * 两两交换链表中的结点24
+     *
      * @param head
      * @return
      * @data 2019/4/5
@@ -202,7 +231,7 @@ public class Solution {
         ListNode dummy = new ListNode(-1);
         ListNode pre = dummy;
         dummy.next = head;
-        while(pre.next != null && pre.next.next != null){
+        while (pre.next != null && pre.next.next != null) {
             ListNode node1 = pre.next;
             ListNode node2 = node1.next;
 
@@ -217,7 +246,81 @@ public class Solution {
         return retNode;
     }
 
+    /**
+     * 相交链表160
+     * 走的路程相同，两个结点有交点就会相遇
+     *
+     * @param headA
+     * @param headB
+     * @return
+     * @data 2019/7/29
+     */
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        ListNode p1 = headA, p2 = headB;
+        while (p1 != p2) {
+            if (p1 == null)
+                p1 = headB;
+            else
+                p1 = p1.next;
+            if (p2 == null)
+                p2 = headA;
+            else
+                p2 = p2.next;
+        }
+        return p1;
+    }
+
+    /**
+     * 删除排序链表中的重复元素 II 82
+     *
+     * @param head
+     * @return
+     * @data 2019/7/29
+     */
+    public ListNode deleteDuplicates2(ListNode head) {
+        ListNode dummy = new ListNode(-1);
+        dummy.next = head;
+        ListNode pre = dummy;
+        ListNode cur = pre.next;
+        while (cur != null && cur.next != null) {
+            ListNode next = cur.next;
+            if (cur.val != next.val) {
+                pre = cur;
+                cur = cur.next;
+            } else {
+                while (next != null && next.val == cur.val)
+                    next = next.next;
+                cur = next;
+                pre.next = cur;
+            }
+        }
+        return dummy.next;
+    }
+
+    /**
+     * 删除链表的倒数第N个节点19
+     * @param head
+     * @param n
+     * @return
+     */
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+       ListNode dummy = new ListNode(-1);
+       dummy.next = head;
+       ListNode p1 = head,p2 = dummy;
+       int i = 0;
+       while(i < n){
+           p1 = p1.next;
+           i++;
+       }
+       while(p1 != null){
+           p1 = p1.next;
+           p2 = p2.next;
+       }
+       p2.next = p2.next.next;
+       return dummy.next;
+    }
 }
+
 
 class ListNode {
     int val;
