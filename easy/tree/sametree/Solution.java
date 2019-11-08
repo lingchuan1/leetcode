@@ -46,7 +46,7 @@ public class Solution {
      * @data 2019/7/10
      */
     public boolean isBalanced(TreeNode root) {
-        if(root == null)
+        if (root == null)
             return true;
         int leftHeight = treeHeight(root.left);
         int rightHeight = treeHeight(root.right);
@@ -54,62 +54,83 @@ public class Solution {
             return false;
         return isBalanced(root.left) && isBalanced(root.right);
     }
-    public int treeHeight(TreeNode root){
-        if(root == null)
+
+    public int treeHeight(TreeNode root) {
+        if (root == null)
             return 0;
-        return Math.max(treeHeight(root.left),treeHeight(root.right)) + 1;
+        return Math.max(treeHeight(root.left), treeHeight(root.right)) + 1;
     }
 
     /**
      * 一棵树是否是另一棵树的子树
+     *
      * @param s
      * @param t
      * @return
      */
     public boolean isSubtree(TreeNode s, TreeNode t) {
-        if(s == null)
+        if (s == null)
             return false;
-        if(isSame(s,t))
+        if (isSame(s, t))
             return true;
-        return isSubtree(s.left,t) || isSubtree(s.right,t);
+        return isSubtree(s.left, t) || isSubtree(s.right, t);
     }
-    private boolean isSame(TreeNode x,TreeNode y){
-        if(x == null && y == null)
+
+    private boolean isSame(TreeNode x, TreeNode y) {
+        if (x == null && y == null)
             return true;
-        if(x == null || y == null)
+        if (x == null || y == null)
             return false;
-        if(x.val != y.val)
+        if (x.val != y.val)
             return false;
-        return isSame(x.left,y.left) && isSame(x.right,y.right);
+        return isSame(x.left, y.left) && isSame(x.right, y.right);
     }
 
     /**
      * 叶子相似的树872
+     *
      * @param root1
      * @param root2
-     * @data 2019/7/12
      * @return
+     * @data 2019/7/12
      */
     public boolean leafSimilar(TreeNode root1, TreeNode root2) {
         List<Integer> leaf1 = new ArrayList<>();
         List<Integer> leaf2 = new ArrayList<>();
-        helper(root1,leaf1);
-        helper(root2,leaf2);
-        if(leaf1.size() != leaf2.size())//找出所有的叶子结然后比较
+        helper(root1, leaf1);
+        helper(root2, leaf2);
+        if (leaf1.size() != leaf2.size())//找出所有的叶子结然后比较
             return false;
-        for(int i = 0;i < leaf1.size();i ++){
-            if(leaf1.get(i) != leaf2.get(i))
+        for (int i = 0; i < leaf1.size(); i++) {
+            if (leaf1.get(i) != leaf2.get(i))
                 return false;
         }
         return true;
     }
 
-    private void helper(TreeNode root, List<Integer> leaf){
-        if(root == null)
+    private void helper(TreeNode root, List<Integer> leaf) {
+        if (root == null)
             return;
-        if(root.left == null && root.right == null)
+        if (root.left == null && root.right == null)
             leaf.add(root.val);
-        helper(root.left,leaf);
-        helper(root.right,leaf);
+        helper(root.left, leaf);
+        helper(root.right, leaf);
+    }
+
+    /**
+     * 相同的树100
+     *
+     * @param p
+     * @param q
+     * @return
+     * @data 2019/8/4
+     */
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+        if(p == null && q == null)
+            return true;
+        if(p != null && q != null && p.val == q.val){
+            return isSameTree(p.left,q.left) && isSameTree(p.right,q.right);
+        }
+        return false;
     }
 }

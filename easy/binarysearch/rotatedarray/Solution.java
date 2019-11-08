@@ -71,6 +71,7 @@ public class Solution {
         int left = 0, right = nums.length - 1;
         while (left < right) {
             int mid = left + (right - left) / 2;
+            //将中间指针和右边指针比较
             if (nums[mid] < nums[right])
                 right = mid;
             else

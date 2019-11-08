@@ -63,7 +63,7 @@ public class Solution {
         }
         res.get(level).add(node.val);
         helper(node.left,level + 1);
-        helper(node.right,level + 1);
+         helper(node.right,level + 1);
     }
 
     /**

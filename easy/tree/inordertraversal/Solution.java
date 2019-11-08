@@ -93,4 +93,30 @@ public class Solution {
         }
         return res2;
     }
+
+    /**
+     * 中序遍历树94
+     *
+     * @param root
+     * @return
+     * @data 2019/8/8
+     */
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> res = new LinkedList<>();
+        if(root == null)
+            return res;
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode p = root;
+        while(!stack.empty() || p != null){
+            if(p != null){
+                stack.push(p);
+                p = p.left;
+            }else{
+                TreeNode t = stack.pop();
+                res.add(t.val);
+                p = t.right;
+            }
+        }
+        return res;
+    }
 }

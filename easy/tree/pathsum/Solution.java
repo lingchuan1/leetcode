@@ -1,10 +1,9 @@
 package easy.tree.pathsum;
 
-import sun.text.resources.cldr.hy.FormatData_hy;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Stack;
 
 public class Solution {
     public class TreeNode {
@@ -32,6 +31,28 @@ public class Solution {
         return hasPathSum(root.left, sum - root.val) || hasPathSum(root.right, sum - root.val);
     }
 
+    public boolean hasPathSum2(TreeNode root,int sum){
+        if(root == null)
+            return false;
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(root);
+        while(!stack.empty()){
+            TreeNode t = stack.pop();
+            if(t.left == null && t.right == null){
+                if(t.val == sum)
+                    return true;
+            }
+            if(t.right != null){
+                t.right.val += t.val;
+                stack.push(t.right);
+            }
+            if(t.left != null){
+                t.left.val += t.val;
+                stack.push(t.left);
+            }
+        }
+        return false;
+    }
     /**
      * 路径总和II  113
      *
@@ -67,28 +88,20 @@ public class Solution {
      * @param sum
      * @return
      */
-    /*错误？
-    public int pathSumIII(TreeNode root,int sum){
-        List<Integer> out = new LinkedList<>();
-        return helper(root,sum,out);
-    }
-
-    private int helper(TreeNode root,int sum,List<Integer> out){
-        int res = 0;
+    /*
+    public int pathSum(TreeNode root, int sum) {
         if(root == null)
             return 0;
-        out.add(root.val);
-        if(root.left == null && root.right == null && root.val == sum)
-            res ++;
-        int t = res;
-        for(int i = 0;i < out.size() ;i ++){
-            t = t - out.get(i);
-            if(t == sum)
-                res ++;
-        }
-        res = helper(root.left,sum - root.val,out) + helper(root.right,sum - root.val,out) + res;
-        out.remove(out.size() - 1);
-        return res;
+        return helper(root,sum) + pathSum(root.left,sum) + pathSum(root.right,sum);
+    }
+    private int helper(TreeNode root,int sum){
+        int count = 0;
+        if(root == null)
+            return 0;
+        if(root.val == sum)
+            count ++;
+            count = count + (helper(root.left,sum - root.val) + helper(root.right,sum - root.val));
+        return count;
     }
 */
     //前n项和 - sum = 前m项和 说明 前n项和 - 前m项和 = sum

@@ -15,12 +15,12 @@ public class Solution {
                 return Long.parseLong(o2 + o1) - Long.parseLong(o1 + o2) > 0 ? 1 : -1;
             }
         });
-        String res = "";
+        StringBuffer res = new StringBuffer();
         for (String s : numsStr)
-            res += s;
-        if (res.startsWith("0"))
+            res.append(s);
+        if(res.toString().startsWith("0"))
             return "0";
-        return res;
+        return res.toString();
     }
 
     /**

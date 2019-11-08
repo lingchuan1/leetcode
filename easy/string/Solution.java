@@ -79,6 +79,14 @@ public class Solution {
             set.add((long) nums[i]);
         }
         return false;
+//        int n = nums.length;
+//        for(int i = 0;i < n;i ++){
+//            for(int j = Math.max(0,i - k);j < i ;j ++){
+//                if(Math.abs((long)nums[i] - (long)nums[j]) <= t)
+//                    return true;
+//            }
+//        }
+//        return false;
     }
 
     /**
@@ -107,7 +115,8 @@ public class Solution {
 //        for (int i : list) {
 //            System.out.println(i);
 //        }
-        int nums[] = {1, 5, 9, 1, 5, 9};
-        System.out.println(s.lengthOfLongestSubstring(" "));
+        int nums[] = {-1,2147483647};
+        System.out.println(s.containsNearbyAlmostDuplicate(nums,1,2147483647));
+        System.out.println(Math.abs(2147483647 + 1));
     }
 }

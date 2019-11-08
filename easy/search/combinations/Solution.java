@@ -1,9 +1,6 @@
 package easy.search.combinations;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class Solution {
 
@@ -17,22 +14,51 @@ public class Solution {
      * @return
      * @data 2019/4/7
      */
+//    public List<String> letterCombinations(String digits) {
+//        if (digits.isEmpty())
+//            return res;
+//        findCombination(digits, 0, "");
+//        return res;
+//    }
+//
+//    private void findCombination(String digits, int index, String s) {
+//        if (index == digits.length()) {
+//            res.add(s);
+//            return;
+//        }
+//        char c = digits.charAt(index);
+//        String letters = dict[c - '0'];
+//        for (int i = 0; i < letters.length(); i++) {
+//            findCombination(digits, index + 1, s + letters.charAt(i));
+//        }
+//    }
+    Map<Character,String> map = new HashMap<>();
+   // List<String> res = new ArrayList<>();
     public List<String> letterCombinations(String digits) {
-        if (digits.isEmpty())
+        if(digits.length() == 0)
             return res;
-        findCombination(digits, 0, "");
+        map.put('2',"abc");
+        map.put('3',"def");
+        map.put('4',"ghi");
+        map.put('5',"jkl");
+        map.put('6',"mno");
+        map.put('7',"pqrs");
+        map.put('8',"tuv");
+        map.put('9',"wxyz");
+        helper(digits,0,"");
         return res;
     }
-
-    private void findCombination(String digits, int index, String s) {
-        if (index == digits.length()) {
-            res.add(s);
+    private void helper(String digits,int index,String out){
+        if(index == digits.length()){
+            res.add(out);
             return;
         }
-        char c = digits.charAt(index);
-        String letters = dict[c - '0'];
-        for (int i = 0; i < letters.length(); i++) {
-            findCombination(digits, index + 1, s + letters.charAt(i));
+        System.out.println(digits.charAt(index));
+        System.out.println(map.get("2"));
+        String str = map.get(digits.charAt(index));
+        System.out.println(str);
+        for(int i = 0;i < str.length();i ++){
+            helper(digits,index + 1,out + str.charAt(i));
         }
     }
 //*****************************************************************************************************//
@@ -272,14 +298,6 @@ public class Solution {
     }
     //*****************************************************************************************************//
     public static void main(String[] args) {
-      Solution solution = new Solution();
-      List<List<Integer>> list = new ArrayList<>();
-      list = solution.combinationSum3(3,9);
-      for(List<Integer> res:list){
-          for(int i:res){
-              System.out.print(i);
-          }
-          System.out.println();
-      }
+      new Solution().letterCombinations("23");
     }
 }

@@ -1,5 +1,10 @@
 package easy.linked_list;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Stack;
+
 public class Solution {
     /**
      * 移除链表元素
@@ -299,25 +304,116 @@ public class Solution {
 
     /**
      * 删除链表的倒数第N个节点19
+     *
      * @param head
      * @param n
      * @return
      */
     public ListNode removeNthFromEnd(ListNode head, int n) {
-       ListNode dummy = new ListNode(-1);
-       dummy.next = head;
-       ListNode p1 = head,p2 = dummy;
-       int i = 0;
-       while(i < n){
-           p1 = p1.next;
-           i++;
-       }
-       while(p1 != null){
-           p1 = p1.next;
-           p2 = p2.next;
-       }
-       p2.next = p2.next.next;
-       return dummy.next;
+        ListNode dummy = new ListNode(-1);
+        dummy.next = head;
+        ListNode p1 = head, p2 = dummy;
+        int i = 0;
+        while (i < n) {
+            p1 = p1.next;
+            i++;
+        }
+        while (p1 != null) {
+            p1 = p1.next;
+            p2 = p2.next;
+        }
+        p2.next = p2.next.next;
+        return dummy.next;
+    }
+
+    /**
+     * 链表中的下一个更大结点1019
+     * O(n^2)
+     * @param head
+     * @return
+     * @data 2019/8/3
+     */
+    /*
+    public int[] nextLargerNodes(ListNode head) {
+        ArrayList<Integer> list = new ArrayList<>();
+        ListNode cur = head;
+        if(head == null)
+            return new int[]{};
+        while(cur != null){
+            ListNode node = cur.next;
+            int res = 0;
+           while(node != null){
+               if(node.val > cur.val){
+                   res = node.val;
+                   break;
+               }else{
+                   node = node.next;
+               }
+           }
+           cur = cur.next;
+           list.add(res);
+        }
+        int[] res = new int[list.size()];
+        for(int i = 0;i < list.size();i ++){
+            res[i] = list.get(i);
+        }
+        return res;
+    }
+    */
+
+    /**
+     * 只遍历一次 O(n)
+     * @data 2019/9/20
+     * @param head
+     * @return
+     */
+    public int[] nextLargerNodes(ListNode head) {
+        Stack<ListNode> stack = new Stack<>();
+        Map<ListNode,Integer> map = new HashMap<>();
+        ListNode node = head;
+        int count = 0;
+        while(node != null){
+            map.put(node,0);
+            node = node.next;
+            count ++;
+        }
+        node = head;
+        while(node != null){
+            while(!stack.isEmpty()){
+                int num = stack.peek().val;
+                if(node.val > num){
+                    ListNode cur = stack.pop();
+                    map.put(cur,node.val);
+                }else
+                    break;
+            }
+            stack.push(node);
+            node = node.next;
+        }
+        int[] results = new int[count];
+        int i = 0;
+        node = head;
+        while(node != null){
+            results[i] = map.get(node);
+            node = node.next;
+            i ++;
+        }
+        return results;
+    }
+
+    public static void main(String[] args) {
+        ListNode l1 = new ListNode(2);
+        ListNode l2 = new ListNode(7);
+        ListNode l3 = new ListNode(4);
+        ListNode l4 = new ListNode(3);
+        ListNode l5 = new ListNode(5);
+        l1.next = l2;
+        l2.next = l3;
+        l3.next = l4;
+        l4.next = l5;
+        int[] res = new Solution().nextLargerNodes(l1);
+        for(int i : res)
+            System.out.println(i);
     }
 }
 

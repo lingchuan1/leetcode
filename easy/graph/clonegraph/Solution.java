@@ -1,8 +1,6 @@
 package easy.graph.clonegraph;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class Solution {
     class Node {
@@ -20,11 +18,12 @@ public class Solution {
 
     /**
      * 克隆图133（图以邻接链表表示）
-     *
+     * 递归实现
      * @param node
      * @return
      * @data 2019/7/16
      */
+    /*
     public Node cloneGraph(Node node) {
         if(node == null)
             return null;
@@ -43,5 +42,33 @@ public class Solution {
             clone.neighbors.add(dfs(nei,map));
         }
         return clone;
+    }
+     */
+
+    /**
+     * 迭代实现，使用队列
+     * @data 2019/9/30
+     * @param node
+     * @return
+     */
+    public Node cloneGraph(Node node) {
+        if(node == null)
+            return node;
+        Map<Node,Node> map = new HashMap<>();
+        Queue<Node> queue = new LinkedList<>();
+        Node clone = new Node(node.val,new ArrayList<>());
+        map.put(node,clone);
+        ((LinkedList<Node>) queue).add(node);
+        while(!queue.isEmpty()){
+            Node cur = queue.poll();
+            for(Node n:cur.neighbors){
+                if(!map.containsKey(n)){
+                    map.put(n,new Node(n.val,new ArrayList<>()));
+                    ((LinkedList<Node>) queue).add(n);
+                }
+                map.get(cur).neighbors.add(map.get(n));
+            }
+        }
+        return map.get(node);
     }
 }

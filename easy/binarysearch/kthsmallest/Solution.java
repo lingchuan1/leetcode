@@ -1,5 +1,6 @@
 package easy.binarysearch.kthsmallest;
 
+import java.util.Comparator;
 import java.util.PriorityQueue;
 
 public class Solution {
@@ -36,27 +37,48 @@ public class Solution {
      * @data 2019/7/8
      */
     public int kthSmallest(int[][] matrix, int k) {
+//        int n = matrix.length;
+//        int m = matrix[0].length;
+//        int left = matrix[0][0], right = matrix[n - 1][m - 1];
+//        while (left < right) {
+//            int cnt = 0;
+//            int j = m - 1;
+//            int mid = left + (right - left) / 2;
+//            for (int i = 0; i < n; i++) {
+//                if (matrix[i][m - 1] <= mid)
+//                    cnt += m;
+//                else {
+//                    while (j >= 0 && matrix[i][j] > mid)
+//                        j--;
+//                    cnt += j + 1;
+//                }
+//            }
+//            if (cnt < k)
+//                left = mid + 1;
+//            else right = mid;
+//        }
+//        return right;
+        //使用堆 O(n^2)
         int n = matrix.length;
-        int m = matrix[0].length;
-        int left = matrix[0][0], right = matrix[n - 1][m - 1];
-        while (left < right) {
-            int cnt = 0;
-            int j = m - 1;
-            int mid = left + (right - left) / 2;
-            for (int i = 0; i < n; i++) {
-                if (matrix[i][m - 1] <= mid)
-                    cnt += m;
-                else {
-                    while (j >= 0 && matrix[i][j] > mid)
-                        j--;
-                    cnt += j + 1;
+        PriorityQueue<Integer> queue = new PriorityQueue<>(k, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return o2 - o1;
+            }
+        });
+        for(int i = 0;i < n;i ++){
+            for(int j = 0;j < n;j++){
+                if(queue.size() < k){
+                    queue.add(matrix[i][j]);
+                }else {
+                    if(queue.peek() > matrix[i][j]) {
+                        queue.poll();
+                        queue.add(matrix[i][j]);
+                    }
                 }
             }
-            if (cnt < k)
-                left = mid + 1;
-            else right = mid;
         }
-        return right;
+        return queue.peek();
     }
 
     /**
