@@ -109,14 +109,49 @@ public class Solution {
         return res;
     }
 
+    /**
+     * 最小覆盖字串 76
+     * @data 2019/11/23
+     * @param s
+     * @param t
+     * @return
+     */
+    public String minWindow(String s, String t) {
+        int[] arr = new int[256];
+        for(int i = 0;i < t.length();i ++){
+            arr[t.charAt(i)] ++;
+        }
+        int l = 0,r = 0;
+        int index = -1,curLength = Integer.MAX_VALUE;
+        int dif = t.length();
+        while(r < s.length()){
+            arr[s.charAt(r)] --;
+            if(arr[s.charAt(r)] >= 0)
+                dif --;
+            if(dif == 0){//窗口包含t的全部字符串
+                while(arr[s.charAt(l)] < 0){//尽可能的右移左窗口
+                    arr[s.charAt(l)] ++;
+                    l++;
+                }
+                //更新结果
+                if(r - l + 1 < curLength){
+                    index = l;
+                    curLength = r - l + 1;
+                }
+                arr[s.charAt(l)] ++;
+                dif ++;
+                l++;
+            }
+
+            r++;
+        }
+        if(index == -1)
+            return null;
+        return s.substring(index,index + curLength);
+    }
     public static void main(String[] args) {
         Solution s = new Solution();
-//        List<Integer> list = s.findAnagrams("cbaebabacd", "abc");
-//        for (int i : list) {
-//            System.out.println(i);
-//        }
-        int nums[] = {-1,2147483647};
-        System.out.println(s.containsNearbyAlmostDuplicate(nums,1,2147483647));
-        System.out.println(Math.abs(2147483647 + 1));
+        System.out.println(s.minWindow("ADOBECODEBANC",
+                "ABC"));
     }
 }
